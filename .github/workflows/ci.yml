@@ -1,0 +1,32 @@
+name: CI - Correr Tests
+
+# ¿Cuándo se ejecuta este workflow?
+on:
+  push:
+    branches: [ main ]       # Al hacer push a main
+  pull_request:
+    branches: [ main ]       # Al abrir un PR hacia main
+
+jobs:
+  test:
+    name: Ejecutar Tests con pytest
+    runs-on: ubuntu-latest   # El "runner" (máquina virtual de GitHub)
+
+    steps:
+      # 1. Descarga el código del repo
+      - name: Checkout del código
+        uses: actions/checkout@v4
+
+      # 2. Configura Python
+      - name: Configurar Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      # 3. Instala dependencias
+      - name: Instalar dependencias
+        run: pip install -r requirements.txt
+
+      # 4. Corre los tests
+      - name: Correr pytest
+        run: pytest tests/ -v
